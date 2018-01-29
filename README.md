@@ -93,15 +93,15 @@ samtools merge /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/a
 ```
 
 #### 3. Local realignment around known indels by GATK
-###### 3a. Use CreateSequenceDictionary.jar from Picard to create a .dict file from a fasta file
+##### 3a. Use CreateSequenceDictionary.jar from Picard to create a .dict file from a fasta file
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -jar /nfs/turbo/dcmb-brainsom/technical/application/picard-2.1.1/dist/picard.jar CreateSequenceDictionary R=/nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa O=/nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.dict
 ```
-###### 3b. Use RealignerTargetCreator from GATK to create a intervals_file
+##### 3b. Use RealignerTargetCreator from GATK to create a intervals_file
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T RealignerTargetCreator -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -o /nfs/turbo/dcmb-brainsom/technical/application/support_files/Platinum_BSM_intervals_file.picard -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/ALL.wgs.1000G_phase3.GRCh38.ncbi_remapper.20150424.shapeit2_indels.bsm.modifed.vcf -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/Mills_and_1000G_gold_standard.indels.b38.primary_assembly.vcf
 ```
-###### 3c. Local realignment around known indels by GATK
+##### 3c. Local realignment around known indels by GATK
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp2.NA12878.sorted.bam -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T IndelRealigner -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -I /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.bam -o /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.bam -targetIntervals /nfs/turbo/dcmb-brainsom/technical/application/support_files/Platinum_BSM_intervals_file.picard -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/ALL.wgs.1000G_phase3.GRCh38.ncbi_remapper.20150424.shapeit2_indels.bsm.modifed.vcf -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/Mills_and_1000G_gold_standard.indels.b38.primary_assembly.vcf -LOD 0.4 -model KNOWNS_ONLY -compress 0 --disable_bam_indexing
 ```
