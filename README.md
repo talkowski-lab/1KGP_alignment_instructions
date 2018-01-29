@@ -79,15 +79,15 @@ gunzip ERR194147_1.fastq.gz
 ```
 
 #### 2. Align NA12878 at run level
-######## 2a. subsplit fastq file into smaller files for faster alignment
+###### 2a. subsplit fastq file into smaller files for faster alignment
 ```
 python /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/pbs/subsplit_fastq.py --input /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_2/NA12878_1.fastq --size 10000000
 ```
-########2b. align sub fastq files
+###### 2b. align sub fastq files
 ```
 bwa mem  -t 1 -B 4 -O 6 -E 1 -M -R "@RG\tID:ERR194147\tSM:NA12878\tCN:ILLUMINA\tPL:ILLUMINA\tDS:ERP001960" /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_sub/NA12878_1.sub1.fastq /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_sub/NA12878_2.sub1.fastq |samtools view -1 - > /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub1.bam
 ```
-######## 2c. merge aligned sub bam files
+###### 2c. merge aligned sub bam files
 ```
 samtools merge /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.1.bam /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub1.bam /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub2.bam /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub3.bam
 ```
